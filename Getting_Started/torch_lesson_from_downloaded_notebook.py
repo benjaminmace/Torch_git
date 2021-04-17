@@ -28,12 +28,12 @@ X_train, X_val, y_train, y_val = train_test_split(df.index.values,
 
 df['data_type'] = ['not_set'] * df.shape[0]
 
-df.loc[X_train, 'data_type'] = 'train'
+df.loc[X_train, 'data_type'] = 'train_images'
 df.loc[X_val, 'data_type'] = 'val'
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
 
-encoded_data_train = tokenizer.batch_encode_plus(df[df.data_type=='train'].text.values,
+encoded_data_train = tokenizer.batch_encode_plus(df[df.data_type=='train_images'].text.values,
                                                  add_special_tokens=True,
                                                  return_attention_mask=True,
                                                  pad_to_max_length=True,
@@ -50,7 +50,7 @@ encoded_data_val = tokenizer.batch_encode_plus(df[df.data_type=='val'].text.valu
 
 input_ids_train = encoded_data_train['input_ids']
 attention_masks_train = encoded_data_train['attention_mask']
-labels_train = torch.tensor(df[df.data_type=='train'].label.values)
+labels_train = torch.tensor(df[df.data_type=='train_images'].label.values)
 
 input_ids_val = encoded_data_val['input_ids']
 attention_masks_val = encoded_data_val['attention_mask']
